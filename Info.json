@@ -1,0 +1,11 @@
+{
+  "Id": "dvRadioJobControl",
+  "DisplayName": "DV Radio Job Control",
+  "Author": "scitor",
+  "Version": "0.3.0",
+  "HomePage": "https://github.com/scitor/dvRadioJobControl",
+  "AssemblyName": "dvRadioJobControlMod.dll",
+  "EntryMethod": "dvRadioJobControl.Main.Load",
+  "ManagerVersion": "0.27.3",
+  "Repository": "https://github.com/scitor/dvRadioJobControl/raw/master/repository.json"
+}

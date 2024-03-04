@@ -1,0 +1,9 @@
+{
+    "Releases": [
+      {
+        "Id": "dvRadioJobControl",
+        "Version": "0.3.0",
+        "DownloadUrl": "https://github.com/scitor/dvRadioJobControl/raw/master/dist/dvRadioJobControl_v0.3.0.zip"
+      }
+    ]
+}

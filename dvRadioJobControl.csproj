@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>dvRadioJobControlMod</AssemblyName>
+    <Description>Disable Steam or Diesel for more immersion!</Description>
+    <Version>0.2.0</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>dvRadioJobControl</RootNamespace>
+    <ReferencePath>E:\Steam\steamapps\common\Derail Valley\DerailValley_Data\Managed</ReferencePath>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <AssemblySearchPaths>
+       $(AssemblySearchPaths);
+       $(ReferencePath);
+    </AssemblySearchPaths>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp" />
+	<Reference Include="CommandTerminal" />
+    <Reference Include="DV.Simulation" />
+    <Reference Include="DV.ThingTypes" />
+    <Reference Include="DV.UI" />
+    <Reference Include="DV.Utils" />
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>E:\Steam\SteamApps\common\Derail Valley\DerailValley_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI" />
+    <Reference Include="UnityEngine.IMGUIModule" />
+    <Reference Include="UnityEngine" />
+    <Reference Include="UnityEngine.CoreModule" />
+    <Reference Include="UnityEngine.AudioModule" />
+    <Reference Include="UnityEngine.PhysicsModule" />
+    <Reference Include="PersistentJobsMod">
+		<HintPath>$(ReferencePath)\..\..\Mods\PersistentJobs\PersistentJobsMod.dll</HintPath>
+    </Reference>
+
+    <PackageReference Include="UnityModManager" Version="0.27.2" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <!-- Copy to build folder -->
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="build/" />
+
+    <!-- Package after Release build -->
+    <Exec Condition="'$(ConfigurationName)' == 'Release' And '$(OS)' == 'Windows_NT'" Command="powershell -executionpolicy bypass -Command &quot;(./package.ps1)&quot;" />
+    <Exec Condition="'$(ConfigurationName)' == 'Release' And '$(OS)' != 'Windows_NT'" Command="pwsh  -Command &quot;(./package.ps1)&quot;" />
+  </Target>
+</Project>
