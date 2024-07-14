@@ -2,6 +2,7 @@
 using DV;
 using DV.Booklets;
 using DV.Logic.Job;
+using DV.ServicePenalty;
 using DV.ThingTypes;
 using DV.Utils;
 using System.Collections.Generic;
@@ -129,6 +130,17 @@ namespace dvRadioJobControl
             return StationController.allStations.OrderBy(sc => (position - sc.gameObject.transform.position).sqrMagnitude).First();
         }
 
+        private bool IsLegalJob(Job job)
+        {
+            if (SingletonBehaviour<JobsManager>.Instance.currentJobs.Count >= SingletonBehaviour<LicenseManager>.Instance.GetNumberOfAllowedConcurrentJobs())
+                return false;
+            if (!SingletonBehaviour<LicenseManager>.Instance.IsLicensedForJob(JobLicenseType_v2.ToV2List(job.requiredLicenses)))
+                return false;
+            if (!SingletonBehaviour<CareerManagerDebtController>.Instance.IsPlayerAllowedToTakeJob())
+                return false;
+            return true;
+        }
+
         public void OnUse()
         {
             switch (currentState)
@@ -152,7 +164,7 @@ namespace dvRadioJobControl
                         
                         switch (selectedAction) {
                             case Act.accept:
-                                if (jobOfCar != null && jobOfCar.State == JobState.Available) {
+                                if (jobOfCar != null && jobOfCar.State == JobState.Available && IsLegalJob(jobOfCar)) {
                                     CommsRadioController.PlayAudioFromRadio(confirmSound, transform);
                                     //SingletonBehaviour<JobsManager>.Instance.TakeJob(jobOfCar, true);
 
